@@ -1,7 +1,7 @@
 import enum
 
 
-@enum.Enum
+@enum.unique
 class ColumnDataType(enum.IntEnum):
     INT = enum.auto()
     FLOAT = enum.auto()

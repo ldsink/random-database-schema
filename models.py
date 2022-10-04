@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import List
 
 from constants import ColumnDataType
 
@@ -9,14 +10,16 @@ class DatabaseItem:
 
 
 @dataclass
-class TableItem:
-    name: str
-
-
-@dataclass
-class ColumnItem:
+class TableColumnItem:
     name: str
     data_type: ColumnDataType
     null: bool = False
     default = None
     comment: str = None
+
+
+@dataclass
+class TableItem:
+    database: DatabaseItem
+    name: str
+    columns: List[TableColumnItem]
