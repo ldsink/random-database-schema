@@ -30,7 +30,7 @@ def _get_column_data_types() -> List[ColumnDataType]:
 
 
 def get_database_item() -> DatabaseItem:
-    return DatabaseItem(name=_get_random_name())
+    return DatabaseItem(name=_get_random_name(), comment=_get_random_comment())
 
 
 def get_table_column() -> TableColumnItem:

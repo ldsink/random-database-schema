@@ -19,7 +19,7 @@ cd random-database-schema
 poetry install
 
 # 设置参数开始生成数据库
-
+poetry run python main.py
 ```
 
 ## TODO

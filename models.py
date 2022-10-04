@@ -7,6 +7,7 @@ from constants import ColumnDataType
 @dataclass
 class DatabaseItem:
     name: str
+    comment: str = None
 
 
 @dataclass

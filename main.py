@@ -5,8 +5,11 @@ from modules.generator import get_database_item, get_table_item
 
 if __name__ == '__main__':
     # TODO get args from shell
-    database_num = 10000
-    table_size = 200
+    # database_num = 10000
+    # table_size = 200
+    # column_size = 200
+    database_num = 1
+    table_size = 100000
     column_size = 200
     adapter = "clickhouse"
     kwargs = {}
