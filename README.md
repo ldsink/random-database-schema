@@ -14,11 +14,15 @@
 # 克隆项目
 git clone https://github.com/ldsink/random-database-schema
 cd random-database-schema
+
 # 安装依赖
 poetry install
+
 # 设置参数开始生成数据库
+
 ```
 
 ## TODO
 
 * 支持其他数据库
+* 生成速度更快
