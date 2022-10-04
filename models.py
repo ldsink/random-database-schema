@@ -24,3 +24,6 @@ class TableItem:
     database: DatabaseItem
     name: str
     columns: List[TableColumnItem]
+
+    def __post_init__(self):
+        self.columns = sorted(self.columns, key=lambda _: (_.data_type, _.name))  # order by data_type
