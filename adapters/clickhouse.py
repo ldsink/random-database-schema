@@ -2,11 +2,22 @@ import clickhouse_driver
 from clickhouse_driver import defines
 
 from adapters.base import BaseAdapter
-from models import DatabaseItem, TableItem
+from constants import ColumnDataType
+from models import DatabaseItem, TableColumnItem, TableItem
 
 
 class ClickHouseAdapter(BaseAdapter):
     Adapter = "clickhouse"
+
+    # https://clickhouse.com/docs/en/sql-reference/data-types/
+    _data_type_mapping = {
+        ColumnDataType.INT: "INT",
+        ColumnDataType.FLOAT: "FLOAT",
+        ColumnDataType.STR: "String",
+        ColumnDataType.BOOL: "Bool",
+        ColumnDataType.DATE: "Date",
+        ColumnDataType.DATETIME: "DateTime('Asia/Shanghai')",
+    }
 
     def __init__(
             self, host="localhost", port=None,
@@ -26,12 +37,17 @@ class ClickHouseAdapter(BaseAdapter):
         self.client.execute(query)
 
     def create_table(self, table: TableItem):
-        """
-        https://clickhouse.com/docs/en/sql-reference/statements/create/table
-        CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
-(
-    name1 [type1] [NULL|NOT NULL] [DEFAULT|MATERIALIZED|EPHEMERAL|ALIAS expr1] [compression_codec] [TTL expr1],
-    name2 [type2] [NULL|NOT NULL] [DEFAULT|MATERIALIZED|EPHEMERAL|ALIAS expr2] [compression_codec] [TTL expr2],
-    ...
-) ENGINE = engine
-        """
+        """https://clickhouse.com/docs/en/sql-reference/statements/create/table"""
+        query = f"CREATE TABLE {table.database.name}.{table.name} ({', '.join(map(self.get_column_statement, table.columns))}) ENGINE = MergeTree"
+        if table.comment:
+            query = f"{query} COMMENT '{table.comment}'"
+        self.client.execute(query)
+
+    @classmethod
+    def get_column_statement(cls, column: TableColumnItem) -> str:
+        s = f"{column.name} {cls._data_type_mapping[column.data_type]} {'' if column.null else 'NOT '}NULL"
+        if column.default:
+            s = f"{s} DEFAULT '{column.default}'"
+        if column.comment:
+            s = f"{s} COMMENT '{column.comment}'"
+        return s

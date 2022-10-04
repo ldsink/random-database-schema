@@ -25,7 +25,7 @@ def get_table_item(database: DatabaseItem, column_size=200) -> TableItem:
     columns = []
     for i in range(column_size):
         columns.append(get_table_column())
-    return TableItem(database=database, name=_get_random_name(), columns=columns)
+    return TableItem(database=database, name=_get_random_name(), columns=columns, comment=_get_random_comment())
 
 
 _r = RandomWords()

@@ -1,4 +1,4 @@
-from models import DatabaseItem, TableItem
+from models import DatabaseItem, TableColumnItem, TableItem
 
 
 class BaseAdapter:
@@ -11,4 +11,8 @@ class BaseAdapter:
         raise NotImplementedError
 
     def create_table(self, table: TableItem):
+        raise NotImplementedError
+
+    @classmethod
+    def get_column_statement(cls, column: TableColumnItem) -> str:
         raise NotImplementedError
