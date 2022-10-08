@@ -38,7 +38,18 @@ class ClickHouseAdapter(BaseAdapter):
 
     def create_table(self, table: TableItem):
         """https://clickhouse.com/docs/en/sql-reference/statements/create/table"""
-        query = f"CREATE TABLE {table.database.name}.{table.name} ({', '.join(map(self.get_column_statement, table.columns))}) ENGINE = MergeTree"
+        column_statements = list(map(self.get_column_statement, table.columns))
+        primary_key = None
+        for column in table.columns:
+            if not column.null and column.data_type == ColumnDataType.DATE:
+                primary_key = column.name
+                break
+        if not primary_key:
+            primary_key = "auto_generated_primary_key"
+            column = TableColumnItem(name=primary_key, data_type=ColumnDataType.DATE, null=False)
+            column_statements.append(self.get_column_statement(column))
+        column_statements.append(f"PRIMARY KEY({primary_key})")
+        query = f"CREATE TABLE {table.database.name}.{table.name} ({', '.join(column_statements)}) ENGINE = MergeTree"
         if table.comment:
             query = f"{query} COMMENT '{table.comment}'"
         self.client.execute(query)

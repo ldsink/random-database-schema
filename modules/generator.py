@@ -5,6 +5,7 @@ from typing import List
 from random_word import RandomWords
 
 from constants import ColumnDataType
+from modules.zen import zen_of_python
 from models import DatabaseItem, TableColumnItem, TableItem
 
 
@@ -31,18 +32,18 @@ def get_table_item(database: DatabaseItem, column_size=200) -> TableItem:
 _r = RandomWords()
 
 
+def _get_random_zen(max_len: int = 100) -> str:
+    start = random.randint(0, len(zen_of_python) - 1)
+    end = min(len(zen_of_python), start + random.randint(0, max_len))
+    return zen_of_python[start:end]
+
+
 def _get_random_name() -> str:
-    words, word_num = [], random.randint(1, 5)
-    for i in range(word_num):
-        words.append(_r.get_random_word())
-    return "_".join(words)
+    return f"{_r.get_random_word()}_{_get_random_zen()}"
 
 
 def _get_random_comment() -> str:
-    words, word_num = [], random.randint(0, 10)
-    for i in range(word_num):
-        words.append(_r.get_random_word())
-    return " ".join(words)
+    return _get_random_zen(200)
 
 
 @cache
