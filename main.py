@@ -3,11 +3,8 @@ import tqdm
 from adapters import get_adapter_cls
 from modules.generator import get_database_item, get_table_item
 
-if __name__ == '__main__':
-    # TODO get args from shell
-    # database_num = 10000
-    # table_size = 200
-    # column_size = 200
+
+def generate():
     database_num = 1
     table_size = 100000
     column_size = 200
@@ -22,3 +19,11 @@ if __name__ == '__main__':
         for j in tqdm.tqdm(range(table_size)):
             table = get_table_item(database, column_size=column_size)
             adapter.create_table(table)
+
+
+if __name__ == '__main__':
+    # TODO get args from shell
+    # database_num = 10000
+    # table_size = 200
+    # column_size = 200
+    generate()

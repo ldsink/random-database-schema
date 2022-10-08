@@ -6,7 +6,6 @@ authors = ["ZHOU Cheng <c.zhou@live.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-random-word = "1.0.11"
 tqdm = "4.64.1"
 clickhouse-driver = "0.2.4"
 

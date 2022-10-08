@@ -2,11 +2,14 @@ import random
 from functools import cache
 from typing import List
 
-from random_word import RandomWords
-
 from constants import ColumnDataType
-from modules.zen import zen_of_python
 from models import DatabaseItem, TableColumnItem, TableItem
+from modules.words import words
+from modules.zen import zen_of_python
+
+
+def get_random_word() -> str:
+    return random.choice(words)
 
 
 def get_database_item() -> DatabaseItem:
@@ -29,9 +32,6 @@ def get_table_item(database: DatabaseItem, column_size=200) -> TableItem:
     return TableItem(database=database, name=_get_random_name(), columns=columns, comment=_get_random_comment())
 
 
-_r = RandomWords()
-
-
 def _get_random_zen(max_len: int = 100) -> str:
     start = random.randint(0, len(zen_of_python) - 1)
     end = min(len(zen_of_python), start + random.randint(0, max_len))
@@ -39,7 +39,7 @@ def _get_random_zen(max_len: int = 100) -> str:
 
 
 def _get_random_name() -> str:
-    return f"{_r.get_random_word()}_{_get_random_zen()}"
+    return f"{get_random_word()}_{_get_random_zen()}"
 
 
 def _get_random_comment() -> str:
