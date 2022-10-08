@@ -16,9 +16,12 @@ def generate():
     for i in tqdm.tqdm(range(database_num)):
         database = get_database_item()
         adapter.create_database(database)
-        for j in tqdm.tqdm(range(table_size)):
+        for _ in tqdm.tqdm(range(table_size)):
             table = get_table_item(database, column_size=column_size)
-            adapter.create_table(table)
+            try:
+                adapter.create_table(table)
+            except Exception as e:
+                print(e)
 
 
 if __name__ == '__main__':
